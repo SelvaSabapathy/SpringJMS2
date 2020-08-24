@@ -6,6 +6,8 @@ import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jms.listener.DefaultMessageListenerContainer;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+
 import home.sabapathy.jms.actors.Publisher;
 
 @SpringBootApplication
@@ -15,7 +17,14 @@ public class JmsApplication
     {
         ConfigurableApplicationContext applicationContext = SpringApplication.run(JmsApplication.class);
 
-        applicationContext.getBean(Publisher.class).publishMessage();
+        try
+        {
+            applicationContext.getBean(Publisher.class).publishMessage();
+        }
+        catch (JsonProcessingException e)
+        {
+            e.printStackTrace();
+        }
 
         applicationContext.getBean(DefaultMessageListenerContainer.class).shutdown();
     }
